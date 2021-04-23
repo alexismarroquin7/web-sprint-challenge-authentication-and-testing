@@ -1,8 +1,25 @@
 const User = require('../users/users-model');
 const router = require('express').Router();
+const { checkUserBody, checkUsernameFree, checkUsernameExists } = require('./auth-middleware');
+const { generateToken } = require('../../utils');
+const bcrypt = require('bcryptjs');
 
-router.post('/register', (req, res) => {
-  
+router.post('/register', checkUserBody, checkUsernameFree, async (req, res, next) => {
+
+  let user = req.body;
+
+  const rounds = process.env.BCRYPT_ROUNDS || 8;
+  const hash = bcrypt.hashSync(user.password, rounds);
+
+  user.password = hash;
+
+  try {
+    const saved = await User.create(user);
+    console.log(saved);
+    res.status(201).json(saved);
+  } catch(err){
+    next(err);
+  }
   /*
     IMPLEMENT
     You are welcome to build additional middlewares to help with the endpoint's functionality.

@@ -34,7 +34,9 @@ describe('server', () => {
     }, 500);
     it('on SUCCESSFUL registration the response body should have `id`, `username`, `password` { "id": 1, "username": "johnDoe", "password": "hashed pass" }', async () => {
       const res = await request(server).post('/api/auth/register').send(johnDoe);
-      expect(res.body).toMatchObject({ id: 1, username: johnDoe, password: "hashed pass" });
+      expect(res.body).toHaveProperty('id');
+      expect(res.body).toHaveProperty('username');
+      expect(res.body).toHaveProperty('password');
     }, 500);
   });
   describe('[POST] /api/auth/login', () => {
