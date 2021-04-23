@@ -51,7 +51,4 @@ describe('server', () => {
       expect(res.body).toMatchObject({ message: "welcome, johnDoe", token: "eyJhbGciOiJIUzI ... ETC ... vUPjZYDSa46Nwz8" });
     });
   });
-  // describe('[GET] /api/jokes', () => {
-
-  // });
 });
